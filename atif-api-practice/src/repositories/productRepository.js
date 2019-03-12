@@ -1,4 +1,4 @@
-const products = require("./db/products.json");
+import products from './db/products.json';
 
 function getAll() {
   return products;

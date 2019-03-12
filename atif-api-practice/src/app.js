@@ -5,43 +5,61 @@
 
 
     import express from 'express';
-    import customerController  from './controllers/customerController';
-    import productController  from './controllers/productController';
-    import orderController  from './controllers/orderController';
+    import cors from 'cors';
+    import bodyParser from 'body-parser';
+
+    // import customerController  from './controllers/customerController';
+    import customerRouter from './controllers/customerController';
+    // import productController  from './controllers/productController';
+    import productRouter from './controllers/productController';
+    import orderRouter from './controllers/orderController';
+
+    // import orderController  from './controllers/orderController';
+
+
     const app = express();
 
+    app.use(cors());
+    app.use(bodyParser.urlencoded({extended:true}));
+    app.use(bodyParser.json());
 
-    app.use('/',(req, res, next)=>{
-        console.log('Request URL1'+req.url)
-        next();
-    },(req, res, next)=>{
-        console.log('Request URL2'+req.url)
+
+    app.use((req, res, next)=>{
+        req.me = { id: '2', firstName:'Atif'};
         next();
     })
-    /**
-     * Customers endpoints
-     */
-    app.get("/", function(req, res, next){
-        console.log(typeof res.json);
-        res.send({'test':'atif'});
-        // res.send("Yay Node Girls!");
-        // console.log(res);
-    });
+
+    // app.use('/',(req, res, next)=>{
+    //     console.log('Request URL1'+req.url)
+    //     next();
+    // },(req, res, next)=>{
+    //     console.log('Request URL2'+req.url)
+    //     next();
+    // });
+
 
     /**
      * Customers endpoints
      */
-    app.get("/customers", customerController.getAll);
-    app.get("/customers/:id", customerController.getOne);
+
+     app.use('/customers', customerRouter);
+    // app.get("/customers", customerController.getAll);
+    // app.get("/customers/:id", customerController.getOne);
+
+    // app.post("/customer", customerController.addCustomer);
+    // app.delete("/customers/:id", customerController.deleteCustomer);
+
     /**
      * Products endpoints
      */
-    app.get("/products", productController.getAll);
-    app.get("/products/:id", productController.getOne);
+    
+    app.use('/products', productRouter);
+
+    // app.get("/products", productController.getAll);
+    // app.get("/products/:id", productController.getOne);
     /**
      * Order endpoints
      */
-    app.get("/orders", orderController.getAll);
-    app.get("/orders/:id", orderController.getOne);
+    app.use('/orders', orderRouter);
 
-    module.exports = app;
+    export default app;

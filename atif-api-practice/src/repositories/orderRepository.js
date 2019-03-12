@@ -1,4 +1,4 @@
-const orders = require("./db/orders.json");
+import orders from './db/orders.json'; 
 
 function getAll() {
   return orders;

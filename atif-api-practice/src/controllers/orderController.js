@@ -1,4 +1,7 @@
-const orderRepo = require("../repositories/orderRepository");
+import express from 'express';
+import orderRepo from '../repositories/orderRepository';
+
+const router = express.Router();
 
 function getAll(req, res, next) {
   res.json(orderRepo.getAll());
@@ -8,7 +11,9 @@ function getOne(req, res, next) {
   res.json(orderRepo.getOne(id));
 }
 
-module.exports = {
-  getAll,
-  getOne
-};
+router.get("/", getAll)
+    .get("/:id", getOne)
+
+
+
+export default router;
